@@ -137,7 +137,7 @@ int main(const int argc, const char** argv){
 
     if(strcmp(argv[ips_or_ports_index], "IP") == 0 || strcmp(argv[ips_or_ports_index], "ip") == 0)
         ips_or_ports = IPS_ACTION;
-    else if(strcmp(argv[ips_or_ports_index], "PORT") == 0 || strcmp(argv[ips_or_ports_index], "[prt]") == 0)
+    else if(strcmp(argv[ips_or_ports_index], "PORT") == 0 || strcmp(argv[ips_or_ports_index], "port") == 0)
         ips_or_ports = PORTS_ACTION;
     else
         return not_valid_command(argv[ips_or_ports_index]);

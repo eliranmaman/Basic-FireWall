@@ -197,16 +197,9 @@ char** remove_element_to_array(char** array, int len, char* to_remove){
     char** new_array;
 
     if(len == 0)
-        return array;
-
-    if(len == 1)
-        new_array = kmalloc(sizeof(char*), GFP_KERNEL);
-    else
-        new_array = kmalloc(sizeof(char*)*(len-1), GFP_KERNEL);
-
-    if(!new_array)
         return NULL;
 
+    new_array = (len-1) > 1 ? kmalloc(sizeof(char*)*(len-1), GFP_KERNEL) : -1;
     for(index=0;index < len;index++){
         if(strncmp(array[iterator], to_remove, strlen(to_remove)) != 0){
             new_array[iterator] = array[iterator];
@@ -301,6 +294,12 @@ static ssize_t c_dev_write(struct file *filep, const char *buffer, size_t len, l
         }else if(action_type == REMOVE_ACTION){
             printk(KERN_INFO "[FireWall][File Operations][WRITE] Excecute NETWORK_IN + REMOVE Command\n");
 
+            //check if exist in the array
+            if(check_array(old_array, old_len, element) == 0){
+                printk(KERN_INFO "[FireWall][File Operations][WRITE] %s is not exist.\n", element);
+                return len;
+            }
+
             new_array = remove_element_to_array(old_array, old_len, element);
             if(new_array == NULL){
                 printk(KERN_INFO "[FireWall][File Operations][WRITE] Cannot allocate new array, %s not copied.\n", buffer);
@@ -311,11 +310,11 @@ static ssize_t c_dev_write(struct file *filep, const char *buffer, size_t len, l
 
             //Update data struct
             if(ips_or_ports == IPS_ACTION){
-                data->in->ips = new_array;
-                data->in->num_of_ips--;
+                data->in->ips = new_array == -1 ? NULL : new_array;
+                data->in->num_of_ips = data->in->num_of_ips > 0 ? data->in->num_of_ips-1:0;
             }else if(ips_or_ports == PORTS_ACTION){
-                data->in->ports = new_array;
-                data->in->num_of_ports--;
+                data->in->ports = new_array == -1 ? NULL : new_array;
+                data->in->num_of_ports = data->in->num_of_ports > 0 ? data->in->num_of_ports-1:0;
             }
 
         }else{
@@ -369,6 +368,12 @@ static ssize_t c_dev_write(struct file *filep, const char *buffer, size_t len, l
         }else if(action_type == REMOVE_ACTION){
             printk(KERN_INFO "[FireWall][File Operations][WRITE] Excecute NETWORK_OUT + REMOVE Command\n");
 
+            //check if exist in the array
+            if(check_array(old_array, old_len, element) == 0){
+                printk(KERN_INFO "[FireWall][File Operations][WRITE] %s is not exist.\n", element);
+                return len;
+            }
+
             new_array = remove_element_to_array(old_array, old_len, element);
             if(new_array == NULL){
                 printk(KERN_INFO "[FireWall][File Operations][WRITE] Cannot allocate new array, %s not copied.\n", buffer);
@@ -379,11 +384,11 @@ static ssize_t c_dev_write(struct file *filep, const char *buffer, size_t len, l
 
             //Update data struct
             if(ips_or_ports == IPS_ACTION){
-                data->out->ips = new_array;
-                data->out->num_of_ips++;
+                data->out->ips = new_array == -1 ? NULL : new_array;
+                data->out->num_of_ips = data->out->num_of_ips > 0 ? data->out->num_of_ips-1:0;
             }else if(ips_or_ports == PORTS_ACTION){
-                data->out->ports = new_array;
-                data->out->num_of_ports++;
+                data->out->ports = new_array == -1 ? NULL : new_array;
+                data->out->num_of_ports = data->out->num_of_ports > 0 ? data->out->num_of_ports-1:0;
             }
 
         }else{
