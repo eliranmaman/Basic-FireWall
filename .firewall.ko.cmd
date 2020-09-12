@@ -1,1 +1,0 @@
-cmd_/home/eliran/LinuxLB/firewall.ko := ld -r -m elf_x86_64 -z max-page-size=0x200000 -T ./scripts/module-common.lds --build-id  -o /home/eliran/LinuxLB/firewall.ko /home/eliran/LinuxLB/firewall.o /home/eliran/LinuxLB/firewall.mod.o ;  true
