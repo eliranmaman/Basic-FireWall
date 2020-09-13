@@ -5,6 +5,8 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <arpa/inet.h>
+ #include <ctype.h>
 
 #define C_DEV_PATH "/dev/network_firewall_device"
 #define NUM_OF_ARGS 8
@@ -76,6 +78,21 @@ int test_argument(const char** argv){
     return is_valid;
 }
 
+int is_number(const char* str){
+    int index = 0;
+    int len = strlen(str);
+    for(index = 0;index < len && isdigit(str[index]);index++);
+    
+    return index == len;
+}
+
+int is_ip_v4(const char *ipAddress)
+{
+    struct sockaddr_in sa;
+    int result = inet_pton(AF_INET, ipAddress, &(sa.sin_addr));
+    return result != 0;
+}
+
 int main(const int argc, const char** argv){
 
     int fd = open(C_DEV_PATH, O_RDWR);
@@ -97,8 +114,7 @@ int main(const int argc, const char** argv){
     else if(argc != NUM_OF_ARGS)
         return not_valid_command(argv[1]);
     else if(test_argument(argv) == 0)
-        return print_help_statement();
-
+        return print_help_statement();        
 
     if(strcmp(argv[1], NETWORK_TYPE_COMMAND) == 0)
         network_type_index = 2;
@@ -142,12 +158,22 @@ int main(const int argc, const char** argv){
     else
         return not_valid_command(argv[ips_or_ports_index]);
 
+    if(ips_or_ports == PORTS_ACTION && !is_number(argv[7])){
+        printf("%s is not valid PORT\n", argv[7]);
+        return not_valid_command(argv[7]);
+    }
+    else if(ips_or_ports == IPS_ACTION && !is_ip_v4(argv[7])){
+            printf("%s is not valid IP\n", argv[7]);
+            return not_valid_command(argv[7]);
+    }
+
     char buffer[256];
     buffer[0] = network_type;
     buffer[1] = action_type;
     buffer[2] = ips_or_ports;
     buffer[3] = '\0';
     strcat(buffer, argv[7]);
+
 
     int len = write(fd, buffer, strlen(buffer));
     close(fd);
