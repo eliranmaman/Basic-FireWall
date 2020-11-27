@@ -33,7 +33,7 @@ int display_help(){
     printf("\t -t \t The type of the element you would like to filter (PORT or IP)\n");
     printf("\t -a \t The type of the action you would like to perform (ADD or REMOVE)\n");
     printf("\t -h \t help information\n");
-    printf("Exemple for using: \n");
+    printf("Example for using: \n");
     printf("\t firewallctl -n IN -a ADD -t IP 127.0.0.1\n");
     return 0;
 }
@@ -179,10 +179,10 @@ int main(const int argc, const char** argv){
     close(fd);
 
     if(len < strlen(buffer)){
-        printf("Your command %s did not excecuted.\n", buffer);
+        printf("Your command %s did not executed.\n", buffer);
         return 0;
     }
 
-    printf("Your command %s excecuted succeffully. there is not need to restart the process.\n", buffer);
+    printf("Your command %s executed successfully there is not need to restart the process.\n", buffer);
     return 0;
 }
