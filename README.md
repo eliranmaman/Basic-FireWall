@@ -1,6 +1,6 @@
-# Basic-FireWall ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/eliranmaman/WP-exploiter) ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/eliranmaman/WP-exploiter/Python%20application/master) ![GitHub](https://img.shields.io/github/license/eliranmaman/WP-exploiter) 
-Basic-Firewall is an educational project, using to help me better understood how to write Kernel Modules. This project is a hook to the NetFilters and manipulates the packets going via the network interfaces.
-Basic-Firewall supporting only IPV-4.
+# Basic-FireWall ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/eliranmaman/Basic-Firewall) ![GitHub](https://img.shields.io/github/license/eliranmaman/Basic-Firewall)
+Basic-Firewall is an educational project, using to help me better understood how to write Kernel Modules. This project using netfilters
+hook for manipulate the network packets. Basic-Firewall supporting only IPV-4.
 
 The Basic-Firewall has its own controller (firewallctl), transferring the user request from the user space to the kernel space through a character device.
 

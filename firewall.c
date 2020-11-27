@@ -643,4 +643,4 @@ void  exit_point(void)
  
 module_init(entry_point);
 module_exit(exit_point);
-MODULE_LICENSE("MIT");
+MODULE_LICENSE("GPL");
