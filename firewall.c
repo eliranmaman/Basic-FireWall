@@ -30,11 +30,6 @@
 #define IPS_ACTION '0'
 #define PORTS_ACTION '1'
 
-#define DATA_FILE_IN_IPS_PATH "/home/eliran/LINUXLB/in_ips"
-#define DATA_FILE_IN_PORTS_PATH "/home/eliran/LINUXLB/in_ports"
-#define DATA_FILE_OUT_IPS_PATH "/home/eliran/LINUXLB/out_ips"
-#define DATA_FILE_OUT_PORTS_PATH "/home/eliran/LINUXLB/out_ports"
-
 /* ------ System Data Structures ----- */
 typedef struct {
     char** ips;
@@ -648,4 +643,4 @@ void  exit_point(void)
  
 module_init(entry_point);
 module_exit(exit_point);
-MODULE_LICENSE("GPL");
+MODULE_LICENSE("MIT");
